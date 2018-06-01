@@ -8,19 +8,16 @@ module Api
       end
 
       def create
-        url = given_url_exists?(params)
-        if url.present?
-          render json: { url.original_url => url.short_url }
-        else
-          new_url = Url.new(url_params)
-          new_url.save
-          render json: { new_url.original_url => short_url }
-        end
+        input_url = remove_url_prefix(params)
+        url = Url.where(original_url: input_url).first_or_create
+        render json: { url.original_url => url.short_url }
       rescue => e
         render json: { error: e }
       end
 
       def destroy
+        @url = Url.find_by(short_url: params[:id])
+        @url.destroy
       end
 
       private
@@ -31,6 +28,15 @@ module Api
 
       def collection
         params[:search] ? Url.where(short_url: params[:search]) : Url.all
+      end
+
+      def serializer(collection)
+        collection.map do |x|
+          {
+            original_url: x.original_url,
+            short_url: x.short_url
+          }
+        end
       end
     end
   end

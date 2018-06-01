@@ -15,15 +15,9 @@ class UrlsController < ApplicationController
   end
 
   def create
-    url = given_url_exists?(params)
-    if url.present?
-      redirect_to url_path(url.id)
-    else
-      new_url = Url.new(url_params)
-      if new_url.save
-        redirect_to root_path
-      end
-    end
+    input_url = remove_url_prefix(params)
+    url = Url.where(original_url: input_url).first_or_create
+    redirect_to url_path(url.id)
   end
 
   def destroy
