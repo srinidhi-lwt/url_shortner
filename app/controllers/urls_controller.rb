@@ -1,3 +1,5 @@
+require 'csv'
+
 class UrlsController < ApplicationController
   include UrlsHelper
 
@@ -22,6 +24,18 @@ class UrlsController < ApplicationController
 
   def destroy
     @url.destroy
+    redirect_to root_path
+  end
+
+  def create_url_csv
+    return redirect_to root_path if params[:url_in_file].blank?
+    file = params[:url_in_file].path
+
+    CSV.foreach(file).each_with_index do |row, index|
+      next if index == 0 # skip the headers
+      input_url = strip_prefix(row[0])
+      Url.where(original_url: input_url).first_or_create
+    end
     redirect_to root_path
   end
 
