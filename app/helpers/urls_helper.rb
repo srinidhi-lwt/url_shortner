@@ -12,4 +12,12 @@ module UrlsHelper
   	url_prefix.each { |x| url.gsub!(x, '') }
   	url
   end
+
+  def application_host(url)
+    "#{ENV['APPLICATION_HOST']}/#{url.short_url}"
+  end
+
+  def add_url_prefix(url)
+    "https://www.#{url.original_url}"
+  end
 end

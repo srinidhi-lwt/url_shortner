@@ -12,8 +12,8 @@
       <div class="col-md-3">
         <h4> <%= url.original_url %> </h4>
       </div>
-      <div class="col-md-3">
-        <h4> <%= link_to url.short_url, "https://#{url.original_url}", target: '_blank' %></h4>
+      <div class="col-md-6">
+        <h4> <%= link_to application_host(url), add_url_prefix(url), target: '_blank' %></h4>
       </div>
       <div class="col-md-3">
         <h4> <%= link_to "Delete", url_path(url.id), method: :delete, class: "btn btn-danger" %></h4>
