@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(version: 20180531175504) do
 
   create_table "urls", force: :cascade do |t|
-    t.text     "original_url"
     t.string   "short_url"
+    t.string   "original_url"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
