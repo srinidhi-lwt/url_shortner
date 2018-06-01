@@ -10,7 +10,7 @@ module Api
       def create
         input_url = remove_url_prefix(params)
         url = Url.where(original_url: input_url).first_or_create
-        render json: { url.original_url => url.short_url }
+        render json: { "result" => url }
       rescue => e
         render json: { error: e }
       end
@@ -18,6 +18,8 @@ module Api
       def destroy
         @url = Url.find_by(short_url: params[:id])
         @url.destroy
+      rescue => e
+        render json: { error: e }
       end
 
       private
